@@ -1,23 +1,86 @@
-Design and implement an 8-bit computer based on the architecture of SAP-1 (Simple-As-Possible) using combinational and sequential logic circuits. This project requires –
+### **Design and Implementation of an 8-bit SAP-1 Computer**
 
-Designing SAP-1 architecture using Proteus simulator as per the specifications.
-Hardware Implementation of SAP-1 using PCB board(s) with allowable and available ICs.
+We designed and implemented an 8-bit computer based on the SAP-1 (Simple-As-Possible) architecture. The project was executed in distinct phases, each focusing on the construction and integration of specific modules using combinational and sequential logic circuits. The implementation was carried out both in simulation using Proteus and on a physical PCB with standard ICs.
 
-For phase A of SAP-1, we have 3 modules to construct:
+### **Phase A: System Timing and Address Management**
 
-Clock pulse generator.
-Program counter.
-Input unit and memory address register (MAR). Clock pulse generator basically generates clock pulse which is used to run the whole computer. Program counter counts from 0 to 15 using binary and sends it to the bus. Memory address register takes the counting and outputs it to other modules. We may use enable, reset etc as inputs in program counter or memory address register to enable or reset their behavior as per our necessity.
-For phase B of Sap-1, we have 2 types of modules to construct.
+In this phase, we constructed the fundamental modules responsible for system timing and managing the program flow.
 
-Register: a) Accumulator b) B- register c) output register
-Ram Registers are our main part in Sap-1 which stores data and necessary instructions and releases it to the corresponding module for processing as per the clock cycle. On the other hand, ram holds the data, address, and instructions which will be processed in a structured way, unlike registers which store 4 or 8-bit data.
-For phase C of Sap-1, we have 2 modules to construct: the Controller/Sequencer and the Instruction Register.
+*   **Clock Pulse Generator:**
+    
+    *   We designed a clock pulse generator to produce the primary timing signal for the entire computer. This circuit generated a continuous stream of clock pulses that synchronized the operations of all other modules.
+        
+*   **Program Counter (PC):**
+    
+    *   We implemented a 4-bit binary program counter capable of counting from 0 to 15.
+        
+    *   The PC was designed to increment with each clock pulse and place its value onto the system bus.
+        
+    *   We incorporated control inputs such as **Enable** (to allow counting) and **Reset** (to clear the count to zero) to manage its behavior as required by the control unit.
+        
+*   **Input Unit and Memory Address Register (MAR):**
+    
+    *   We constructed the Memory Address Register (MAR) to latch the address present on the bus.
+        
+    *   The MAR then held this address stable and output it to the RAM module, ensuring the correct memory location was selected for reading or writing.
+        
+    *   An input unit was also integrated, allowing for manual data entry into the system.
+        
 
-The Instruction Register is responsible for holding the fetched instruction from memory by separating it into two parts — the opcode and the operand. The opcode is used to identify the type of operation to be performed, while the operand provides the data address or value needed for that operation.
+### **Phase B: Data Storage and Memory**
 
-On the other hand, the Controller/Sequencer generates the required control signals step by step with each clock pulse (T-states), ensuring that all modules such as the program counter, memory, registers, and ALU work in proper order. Together, these two modules allow the system to fetch, decode, and execute instructions, completing the full operational cycle of the SAP-1 computer.
+This phase involved building the core data storage components of the SAP-1 computer.
 
-For phase D of Sap-1, we have 1 main module to construct: the Arithmetic Logic Unit (ALU). The ALU is the heart of the SAP-1 architecture as it carries out the actual arithmetic operations required by the instructions. In our design, the ALU is simple and limited to two operations — addition and subtraction — which are sufficient for demonstrating the working principle of the computer.
+*   **Register Bank:**
+    
+    *   We built several 8-bit registers for temporary data storage and output:
+        
+        *   **Accumulator (A-register):** This was the primary register for arithmetic operations, holding one of the operands and often the result.
+            
+        *   **B-register:** This register stored the second operand for ALU operations.
+            
+        *   **Output Register:** We implemented this register to latch data from the bus and display it, providing a user-visible output.
+            
+*   **Random Access Memory (RAM):**
+    
+    *   We constructed the RAM module to store the program instructions and data.
+        
+    *   Unlike the individual registers, the RAM was organized to hold multiple 8-bit words, each accessible by a unique 4-bit address provided by the MAR.
+        
 
-The ALU receives one input directly from the Accumulator and the other from the B-register, and based on the control signal (SU for subtract or default for addition), it performs the required operation. The output of the ALU can then be placed back on the data bus and stored into the Accumulator or sent to the Output Register depending on the instruction sequence. Architecturally, the ALU works in synchronization with the Controller/Sequencer, ensuring that the right operation is performed at the right clock cycle. Although minimal, this ALU design demonstrates the basic computational capability of SAP-1 and serves as the processing engine around which the rest of the modules function.
+### **Phase C: Instruction Processing and Control**
+
+Here, we developed the modules responsible for controlling the fetch-decode-execute cycle.
+
+*   **Instruction Register (IR):**
+    
+    *   We implemented the Instruction Register to hold the instruction fetched from memory.
+        
+    *   The IR was designed to separate the instruction into two parts:
+        
+        *   The **Opcode** (upper 4 bits), which identified the operation to be performed.
+            
+        *   The **Operand** (lower 4 bits), which provided the data address or value.
+            
+*   **Controller / Sequencer:**
+    
+    *   We designed the Controller/Sequencer, which was the state machine that generated all the necessary control signals.
+        
+    *   It operated step-by-step, producing the correct sequence of signals (e.g., PC\_INC, MAR\_LOAD, ALU\_SU) during each T-state (clock cycle) to coordinate the actions of the PC, MAR, RAM, registers, and ALU.
+        
+
+### **Phase D: The Arithmetic Logic Unit (ALU)**
+
+The final core phase was the construction of the processing engine.
+
+*   **Arithmetic Logic Unit (ALU):**
+    
+    *   We built the ALU as the computational heart of the SAP-1.
+        
+    *   Its design was kept simple, supporting two core arithmetic operations: **addition** and **subtraction**.
+        
+    *   The ALU took one 8-bit input directly from the Accumulator and the other from the B-register.
+        
+    *   We used a control signal (SU) to select the operation: a low signal for addition and a high signal for subtraction.
+        
+    *   The output of the ALU was connected back to the data bus, allowing results to be stored back into the Accumulator or the Output Register under the direction of the Controller/Sequencer. This minimal ALU successfully demonstrated the fundamental computational capability of the SAP-1 computer.
